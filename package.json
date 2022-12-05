@@ -1,0 +1,23 @@
+{
+  "name": "wstream",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "build": "esbuild server.js --bundle --minify --platform=node --format=cjs --outfile=dist/index.cjs",
+    "dist": "pkg dist/index.cjs -o webradio"
+  },
+  "author": "hexaheximal",
+  "license": "MIT",
+  "dependencies": {
+    "node-wav": "^0.0.2",
+    "ws": "^8.11.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.15.16",
+    "pkg": "^5.8.0"
+  }
+}
