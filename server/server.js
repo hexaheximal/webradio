@@ -4,11 +4,28 @@ import fs from 'fs';
 
 console.log("Loading audio file...");
 
-let buffer = fs.readFileSync("test.wav");
+let buffer = fs.readFileSync(process.argv[2]);
 let result = wav.decode(buffer);
 const chunkLength = 1;
 
 console.log(`Sample rate: ${result.sampleRate}`);
+
+let showFilenames = false;
+
+for (let i = 0; i < process.argv.length; i++) {
+	if (process.argv[i] == "--show-filenames") {
+		showFilenames = true;
+		break;
+	}
+}
+
+let songName = "Unknown";
+
+// TODO: Use WAV metadata for this by default
+
+if (showFilenames) {
+	songName = process.argv[2];
+}
 
 const wss = new WebSocketServer({
 	port: 3000,
@@ -64,7 +81,7 @@ wss.on("connection", (ws) => {
 		clearInterval(interval);
 	});
 	
-	ws.send(JSON.stringify({type: "metadata", songName: "SuperTux Advance - Emotional Deluge", sampleRate: result.sampleRate, chunkLength}));
+	ws.send(JSON.stringify({type: "metadata", songName, sampleRate: result.sampleRate, chunkLength}));
 });
 
 console.log("WebSocket Server listening on port 3000");
