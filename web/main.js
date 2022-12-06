@@ -65,6 +65,14 @@ function App() {
 				const jsonData = JSON.parse(message.data);
 				
 				if (jsonData.type == "metadata") {
+					if (jsonData.sampleRate > audioCtx.sampleRate) {
+						setTimeout(() => {socket.close();alert("The server is using an incompatible sample rate!")}, 1);
+						status.innerText = "Click the button to start streaming audio.";
+						button.innerText = "Play";
+						playing = false;
+						throw new Error("The server is using an incompatible sample rate!");
+					}
+
 					song.innerText = jsonData.songName;
 					sampleRate = jsonData.sampleRate;
 					chunkLength = jsonData.chunkLength;
